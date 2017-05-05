@@ -101,5 +101,5 @@ Install anaconda, GraphLab, ipython notebook
 notebook
 - notebooks can include code and markdown
 
-[Starting Python](week_1/Getting started with iPython Notebook.html)
+[Starting Python](/week_1/Getting started with iPython Notebook.html)
 - [source](week_1/Getting started with iPython Notebook.ipynb)
