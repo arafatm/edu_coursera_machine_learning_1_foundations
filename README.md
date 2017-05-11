@@ -103,6 +103,8 @@ Install anaconda, GraphLab, ipython notebook
 notebook
 - notebooks can include code and markdown
 
+`ipython <file>.py` to run the python script
+
 [First Notebook](week_1/Getting started with iPython Notebook.html)
 - [source](week_1/Getting started with iPython Notebook.ipynb)
 
@@ -169,6 +171,9 @@ square(3)
 
 ### GETTING STARTED WITH SFRAME AND GRAPHLAB CREATE
 
+[Full iPython Notebook 
+Source](https://github.com/arafatm/edu_coursera_machine_learning_1_foundations/blob/master/week_1/Getting%20Started%20with%20SFrames.ipynb)
+
 Machine learning library [scikit-learn](http://scikit-learn.org/stable/)
 
 Data manipulation tool [Pandas](http://pandas.pydata.org/)
@@ -177,81 +182,36 @@ Tools above require a learning curve. This course uses [GraphLab
 Create](https://turi.com) that includes 
 [SFrame](https://github.com/turi-code/SFrame)
 
-To get the code below to run
-
-```
-pip install virtualenvwrapper
-```
-
 ```python
-import graphlab
 
-graphlab.product_key.set_product_key('your product key here')
-graphlab.set_runtime_config('GRAPHLAB_DEFAULT_NUM_PYLAMBDA_WORKERS', 4)
-graphlab.product_key.get_product_key()
-
-sf = graphlab.SFrame('people-example.csv') # Load a tabular data set
-
-sf # we can view first few lines of table
+sf = graphlab.SFrame('people-example.csv')
+Load a tabular data set
 
 sf.tail() # view end of the table
-          # .show() visualizes any data structure in GraphLab Create
+sf.show() # visualizes any data structure in GraphLab Create
 
-```
+sf['age'].show(view='Categorical') # view = Categorical or 
 
-graphlab.canvas.set_target('ipynb')
-
-sf['age'].show(view='Categorical')
-
-Inspect columns of dataset
-
-sf['Country']
-
-sf['age']
-
-Some simple columnar operations
+# Some simple columnar operations
 
 sf['age'].mean()
-
 sf['age'].max()
 
-Create new columns in our SFrame
-
-sf
+# Create new columns in our SFrame
 
 sf['Full Name'] = sf['First Name'] + ' ' + sf['Last Name']
 
-sf
-
-sf['age'] * sf['age']
-
-Use the apply function to do a advance transformation of our data
-
-sf['Country']
-
-sf['Country'].show()
+# Use the apply function to do a advance transformation of our data
 
 def transform_country(country):
 
-    if country == 'USA':
+  if country == 'USA':
+    return 'United States'
+  else:
+  return country
 
-              return 'United States'
+transform_country('USA')
 
-                  else:
+sf['Country'].apply(transform_country)
 
-                            return country
-
-                            transform_country('Brazil')
-
-                            transform_country('Brasil')
-
-                            transform_country('USA')
-
-                            sf['Country'].apply(transform_country)
-
-                            sf['Country'] = 
-                            sf['Country'].apply(transform_country)
-
-                            sf
-
-
+```
