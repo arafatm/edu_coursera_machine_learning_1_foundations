@@ -287,20 +287,38 @@ An example of an even higher order polynomial that may not be what you want :)
 ![Higher order 
 polynomial](https://drive.google.com/uc?id=0BwjXv3TJiWYEYWViYzE0Tkhvdk0)
 
-
-**Linear Regression: A Model-Based Approach**
-
-**Adding higher order effects**
-
 ### Evaluating regression models
 
-Evaluating overfitting via training/test split
+Based on the last example, we can **overfit** to the point that it's not 
+generalizable to new data
 
-Training/test curves
+Want good predictions but can't observe future. We can **simulate prediction**
+- **test set**: remove some houses
+- **training set**: fit model on remaining houses
+- predict test set
 
-Adding other features
+    Training error (w) = ($train1 - fw(sq.ft. train1))^2
+                       + ($train2 - fw(sq.ft. train2))^2
+                       + ($train3 - fw(sq.ft. train3))^2
+                       + ...
 
-Other regression examples
+[Training error](https://drive.google.com/uc?id=0BwjXv3TJiWYEbGZSdjgzR2xrTWs)
+
+
+    Test error (ŵ) = ($test1 - fw(sq.ft. test1))^2
+                   + ($test2 - fw(sq.ft. test2))^2
+                   + ($test3 - fw(sq.ft. test3))^2
+                   + ...
+
+[Test error](https://drive.google.com/uc?id=0BwjXv3TJiWYETF9xREphRG1WanM)
+
+#### Evaluating overfitting via training/test split
+
+#### Training/test curves
+
+#### Adding other features
+
+#### Other regression examples
 
 ### Summary of regression
 
