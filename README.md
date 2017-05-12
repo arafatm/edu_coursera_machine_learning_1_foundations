@@ -2,7 +2,7 @@
 
 https://www.coursera.org/specializations/machine-learning
 
-## WK 1 INTRODUCTION
+## WEEK 1 INTRODUCTION
 
 ### THE MACHINE LEARNING PIPELINE
 
@@ -182,27 +182,26 @@ Tools above require a learning curve. This course uses [GraphLab
 Create](https://turi.com) that includes 
 [SFrame](https://github.com/turi-code/SFrame)
 
-```python
 
-sf = graphlab.SFrame('people-example.csv')
-Load a tabular data set
+Load a tabular data set `sf = graphlab.SFrame('people-example.csv')`
 
-sf.tail() # view end of the table
-sf.show() # visualizes any data structure in GraphLab Create
+view end of the table `sf.tail()`
 
-sf['age'].show(view='Categorical') # view = Categorical or 
+visualizes any data structure in GraphLab Create `sf.show()`
 
-# Some simple columnar operations
+Categorical view `sf['age'].show(view='Categorical')`
 
+Some simple columnar operations
+```
 sf['age'].mean()
 sf['age'].max()
+```
 
-# Create new columns in our SFrame
+Create new columns in our SFrame
+`sf['Full Name'] = sf['First Name'] + ' ' + sf['Last Name']`
 
-sf['Full Name'] = sf['First Name'] + ' ' + sf['Last Name']
-
-# Use the apply function to do a advance transformation of our data
-
+Use the apply function to do a advance transformation of our data
+```
 def transform_country(country):
 
   if country == 'USA':
@@ -213,5 +212,129 @@ def transform_country(country):
 transform_country('USA')
 
 sf['Country'].apply(transform_country)
-
 ```
+
+## WEEK 2 Regression: Predicting House Prices
+
+### Introduction
+
+### Linear regression modeling
+
+This week you will build your first intelligent application that makes
+predictions of house prices from data.
+
+Create models that predict a **continuous value** (price) from **input 
+features** (square footage, number of bedrooms and bathrooms,...).
+
+#### Predicting house prices: A case study in regression
+
+Want to list my house
+- Compare houses in neighborhood
+- Focus on similar houses: sq ft, bedrooms, etc
+
+Plot a graph
+- X = sq. ft.
+- Y = Price
+
+Terminology:
+- x = **feature covariate** or **predictor**
+- y = **observation** or **response**
+
+**Note** no house on graph will have same sq ft as yours. Also, if you only 
+include similar houses you're discarding the rest of the data on the graph
+
+Fit a line through the data = `f(x) = w0 + w1 x`
+- `w0` = intercept
+- `w1` = slope
+
+![Linear Regression 
+Model](https://drive.google.com/uc?id=0BwjXv3TJiWYEOE1tWjFib2xVOWs)
+
+`f(x)` is **parameterized** by `(w0, w1)`
+
+**RSS** := Residaul sum of squares
+- draw a line and sum the distance of plots from line
+
+    RSS(w0,w1) = ($house1 - [w0 + w1(sq ft house1])^2
+               + ($house2 - [w0 + w1(sq ft house2])^2
+               + ($house3 - [w0 + w1(sq ft house3])^2
+               + ...
+
+![RSS](https://drive.google.com/uc?id=0BwjXv3TJiWYERUZfX29HWGZJMkU)
+
+**best line** is the one that minimizes the cost over all possible w0,w1
+
+`Ŵ = (ŵ0, ŵ1)` **W hat** 
+
+`Fŵ(x) = ŵ0 + ŵ1 x`
+
+Best guess of your house price `ŷ = ŵ0 + ŵ1 (sq ft your house)`
+
+#### Adding higher order effects
+
+But what if it's not a linear relationship. It could be quadratic.
+
+`Fw(x) = w0 + w1 x + w2 x^2`
+
+**note** we square x, but not w
+
+We can apply even **higher order polynomials** to reduce RSS further
+
+![Quadratic](https://drive.google.com/uc?id=0BwjXv3TJiWYEXzIySWUxX2t0dUU)
+
+An example of an even higher order polynomial that may not be what you want :)
+
+![Higher order 
+polynomial](https://drive.google.com/uc?id=0BwjXv3TJiWYEYWViYzE0Tkhvdk0)
+
+
+**Linear Regression: A Model-Based Approach**
+
+**Adding higher order effects**
+
+### Evaluating regression models
+
+Evaluating overfitting via training/test split
+
+Training/test curves
+
+Adding other features
+
+Other regression examples
+
+### Summary of regression
+
+Regression ML block diagram
+
+### Quiz: Regression
+
+### Predicting house prices: IPython Notebook
+
+Open the iPython Notebook used in this lesson to follow along
+
+Loading & exploring house sale data
+
+Splitting the data into training and test sets
+
+Learning a simple regression model to predict house prices from house size
+
+Evaluating error (RMSE) of the simple model
+
+Visualizing predictions of simple model with Matplotlib
+
+Inspecting the model coefficients learned
+
+Exploring other features of the data
+
+Learning a model to predict house prices from more features
+
+Applying learned models to predict price of an average house
+
+Applying learned models to predict price of two fancy houses
+
+### Programming assignment
+
+#### Predicting house prices assignment
+
+#### Quiz: Predicting house prices3 questions
+
