@@ -284,10 +284,11 @@ We can apply even **higher order polynomials** to reduce RSS further
 
 An example of an even higher order polynomial that may not be what you want :)
 
-![Higher order 
-polynomial](https://drive.google.com/uc?id=0BwjXv3TJiWYEYWViYzE0Tkhvdk0)
+![Higher order polynomial](https://drive.google.com/uc?id=0BwjXv3TJiWYEYWViYzE0Tkhvdk0)
 
 ### Evaluating regression models
+
+#### Evaluating overfitting via training/test split
 
 Based on the last example, we can **overfit** to the point that it's not 
 generalizable to new data
@@ -312,9 +313,14 @@ Want good predictions but can't observe future. We can **simulate prediction**
 
 ![Test error](https://drive.google.com/uc?id=0BwjXv3TJiWYETF9xREphRG1WanM)
 
-#### Evaluating overfitting via training/test split
-
 #### Training/test curves
+
+Training error `ŵ` decresases with increasing model order
+
+Test error decreases *up to a point* but then starts increasing
+
+![Training/Test curves](https://drive.google.com/uc?id=0BwjXv3TJiWYEa1ZBNTQ4MldTTjg)
+
 
 #### Adding other features
 
