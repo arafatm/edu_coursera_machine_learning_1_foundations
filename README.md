@@ -302,7 +302,7 @@ Want good predictions but can't observe future. We can **simulate prediction**
                        + ($train3 - fw(sq.ft. train3))^2
                        + ...
 
-[Training error](https://drive.google.com/uc?id=0BwjXv3TJiWYEbGZSdjgzR2xrTWs)
+![Training error](https://drive.google.com/uc?id=0BwjXv3TJiWYEbGZSdjgzR2xrTWs)
 
 
     Test error (ŵ) = ($test1 - fw(sq.ft. test1))^2
@@ -310,7 +310,7 @@ Want good predictions but can't observe future. We can **simulate prediction**
                    + ($test3 - fw(sq.ft. test3))^2
                    + ...
 
-[Test error](https://drive.google.com/uc?id=0BwjXv3TJiWYETF9xREphRG1WanM)
+![Test error](https://drive.google.com/uc?id=0BwjXv3TJiWYETF9xREphRG1WanM)
 
 #### Evaluating overfitting via training/test split
 
