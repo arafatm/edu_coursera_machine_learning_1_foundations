@@ -321,16 +321,48 @@ Test error decreases *up to a point* but then starts increasing
 
 ![Training/Test curves](https://drive.google.com/uc?id=0BwjXv3TJiWYEa1ZBNTQ4MldTTjg)
 
-
 #### Adding other features
+
+What if we need to add additional variables e.g. *# bathrooms*
+
+Each new variable is a new dimension. so adding bathroom is a 3d graph
+- calculate **hyperplane** on the cube
+
+![More features](https://drive.google.com/open?id=0BwjXv3TJiWYEU3VRS2QzdnN2TVk)
+
 
 #### Other regression examples
 
+- Salary after ML specialization `ŷ = ŵ0 + ŵ1 performance + ŵ capstone + ŵ forum`
+- Stock prediction depends on recent prices, news event, related commodities
+- tweet poplarity: # followers, # followers of followers, popularity of hashtag
+
 ### Summary of regression
 
-Regression ML block diagram
+![Regression Summary](https://drive.google.com/open?id=0BwjXv3TJiWYEUlVHT3NQX1pMVzA)
+
+- Describe the input **features** and output **real-valued predictions** of a 
+  **regression model**
+- Calculate a goodness-of-fit metric (e.g., **RSS**) 
+- Estimate model parameters by **minimizing RSS**  (algorithms to come...) 
+- Exploit the estimated model to form **predictions** 
+- Perform a **training/test split** of the data 
+- Analyze performance of various regression models in terms of **test error** 
+- Use test error to **avoid overfitting** when selecting amongst candidate 
+  models 
+- Describe a regression model using **multiple features** 
 
 ### Quiz: Regression
+
+1. 1
+2. 2
+3. 3
+4. 3
+5. x 2,3 : 4
+6. 4 
+7. x 2,3 : 4
+8. 3
+9. 2
 
 ### Predicting house prices: IPython Notebook
 
