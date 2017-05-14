@@ -364,6 +364,10 @@ Each new variable is a new dimension. so adding bathroom is a 3d graph
 8. 3
 9. 2
 
+See [Explore the Quadratic 
+Equation](https://www.mathsisfun.com/algebra/quadratic-equation-graph.html) to 
+see the effect of the coefficients
+
 ### Predicting house prices: IPython Notebook
 
 Open the iPython Notebook used in this lesson to follow along
