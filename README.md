@@ -171,8 +171,7 @@ square(3)
 
 ### GETTING STARTED WITH SFRAME AND GRAPHLAB CREATE
 
-[Full iPython Notebook 
-Source](https://github.com/arafatm/edu_coursera_machine_learning_1_foundations/blob/master/week_1/Getting%20Started%20with%20SFrames.ipynb)
+[Full iPython Notebook Source](https://github.com/arafatm/edu_coursera_machine_learning_1_foundations/blob/master/code/01.02.getting.started.with.sframes.ipynb)
 
 Machine learning library [scikit-learn](http://scikit-learn.org/stable/)
 
@@ -370,27 +369,44 @@ see the effect of the coefficients
 
 ### Predicting house prices: IPython Notebook
 
-Open the iPython Notebook used in this lesson to follow along
+[Full iPython Notebook Source](https://github.com/arafatm/edu_coursera_machine_learning_1_foundations/blob/master/code/02.01.predicting.house.prices.ipynb)
 
-Loading & exploring house sale data
+#### Loading & exploring house sale data
 
-Splitting the data into training and test sets
+`sales = graphlab.SFrame('home_data.gl/')`
 
-Learning a simple regression model to predict house prices from house size
+View the data
+`sales`
 
-Evaluating error (RMSE) of the simple model
+Generate a scatter plot
+`sales.show(view="Scatter Plot", x="sqft_living", y="price")`
+- can hover over individual points to explore further
 
-Visualizing predictions of simple model with Matplotlib
+#### Splitting the data into training and test sets
 
-Inspecting the model coefficients learned
+`train_data,test_data = sales.random_split(.8,seed=0)`
+- Use `random_split` to split training and test data
+- `0.8` => 80% training and 20% test
 
-Exploring other features of the data
+#### Learning a simple regression model to predict house prices from house size
 
-Learning a model to predict house prices from more features
+`sqft_model = graphlab.linear_regression.create(train_data, target='price', 
+features=['sqft_living'], validation_set=None)`
+- `linear_regression.create`
 
-Applying learned models to predict price of an average house
+#### Evaluating error (RMSE) of the simple model
 
-Applying learned models to predict price of two fancy houses
+#### Visualizing predictions of simple model with Matplotlib
+
+#### Inspecting the model coefficients learned
+
+#### Exploring other features of the data
+
+#### Learning a model to predict house prices from more features
+
+#### Applying learned models to predict price of an average house
+
+#### Applying learned models to predict price of two fancy houses
 
 ### Programming assignment
 
