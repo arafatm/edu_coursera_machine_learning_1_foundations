@@ -387,30 +387,196 @@ Generate a scatter plot
 `train_data,test_data = sales.random_split(.8,seed=0)`
 - Use `random_split` to split training and test data
 - `0.8` => 80% training and 20% test
+- set `seed` to 0 in this case. we should use a random seed or let GL pick it 
+  for you
 
 #### Learning a simple regression model to predict house prices from house size
 
 `sqft_model = graphlab.linear_regression.create(train_data, target='price', 
 features=['sqft_living'], validation_set=None)`
 - `linear_regression.create`
+- note the default algorithm used is **Newton's Method**
 
 #### Evaluating error (RMSE) of the simple model
 
+`print sqft_model.evaluate(test_data)`
+- `max_error` is the outlier
+- Also shows **RMSE**
+
 #### Visualizing predictions of simple model with Matplotlib
+
+```
+import matplotlib.pyplot as plt
+%matplotlib inline
+```
+
+```
+plt.plot(test_data['sqft_living'], test_data['price'], '.',
+         test_data['sqft_living'], sqft_model.predict(test_data), '-')
+```
+- blue `.` is the actual data scatter plot
+- green `-` as a line is the predicted value based on the test_data
 
 #### Inspecting the model coefficients learned
 
+`sqft_model.get('coefficients')`
+- (intercept) =  where the line crosses the y axis
+- sqft_living ~= the average cost of a house per sq ft according to this 
+  regression model
+
 #### Exploring other features of the data
+
+View other features of a house we might be interested in
+```
+my_features = ['bedrooms', 'bathrooms', 'sqft_living', 'sqft_lot', 'floors', 'zipcode']
+sales[my_features].show()
+
+sales.show(view='BoxWhisker Plot', x='zipcode', y='price')
+```
+- `BoxWhisker Plot` to view the set split by feature (zipcode in this case)
 
 #### Learning a model to predict house prices from more features
 
+Based on the data we see other features such as zip code, and # bedrooms makes 
+a difference in the estimated price of a home
+
+```
+my_features_model = graphlab.linear_regression.create(train_data,
+                                                      target='price',
+                                                      features=my_features,
+                                                      validation_set=None)
+
+```
+
+`print my_features` to view what features are includedd
+
+Compare the original model to the expanded features model
+```
+print sqft_model.evaluate(test_data)
+print my_features_model.evaluate(test_data)
+```
+- Note that the **rmse** has lowered by adding additional features
+
 #### Applying learned models to predict price of an average house
+
+```
+house1 = sales[sales['id']=='5309101200'] # find a particular house by id
+
+house1 # to view the data for this house
+```
+
+`print house1['price']` to view the actual price based on the data
+
+`print sqft_model.predict(house1)` to check the price our model predicted
+
+`print my_features_model.predict(house1)` to predict price based on expanded 
+features
+
+:caution: the prediction model based on sqft was more accurate than the 
+expanded feature model in **this case**
 
 #### Applying learned models to predict price of two fancy houses
 
-### Programming assignment
+`house2 = sales[sales['id']=='1925069082']`
+- this is an example of a house where due to an uncaptured feature, "on the 
+  waterfront", was not predicted very well by our model
+- expanded feature prediction is _closer_ than the original sqft model
 
-#### Predicting house prices assignment
+Final example is Bill Gates' house. We don't have data on what the actual price 
+is but the prediction gives us a price, that is probably on the low end.
 
-#### Quiz: Predicting house prices3 questions
+### Quiz: Programming assignment
+
+1. Selection and summary statistics: In the notebook we covered in the module, 
+   we discovered which neighborhood (zip code) of Seattle had the highest 
+   average house sale price. Now, take the sales data, select only the houses 
+   with this zip code, and compute the average price.
+
+Ans:
+```python
+houses = sales[sales['zipcode']=='98039']
+houses['price'].mean()
+```
+
+2160606.5999999996
+
+2. Filtering data: One of the key features we used in our model was the number 
+   of square feet of living space (sqft_living) in the house. For this part, we 
+   are going to use the idea of filtering (selecting) data.
+
+   In particular, we are going to use logical filters to select rows of an 
+   SFrame. You can find more info in the Logical Filter section of this 
+   documentation. Using such filters, first select the houses that have 
+   sqft_living higher than 2000 sqft but no larger than 4000 sqft. What 
+   fraction of the all houses have sqft_living in this range? Save this result 
+   to answer the quiz at the end.
+
+Ans:
+```python
+100.0 * sales[(sales['sqft_living'] > 2000) & (sales['sqft_living'] <= 4000)].num_rows() / sales.num_rows()
+```
+
+42.187572294452416
+
+
+3. Building a regression model with several more features: In the sample 
+   notebook, we built two regression models to predict house prices, one using 
+   just sqft_living and the other one using a few more features, we called this 
+   set
+
+ `my_features = ['bedrooms', 'bathrooms', 'sqft_living', 'sqft_lot', 'floors', 'zipcode']`
+
+Now, going back to the original dataset, you will build a model using the
+following features:
+
+```
+advanced_features = 
+[
+'bedrooms', 'bathrooms', 'sqft_living', 'sqft_lot', 'floors', 'zipcode',
+'condition', # condition of house       
+'grade', # measure of quality of construction       
+'waterfront', # waterfront property       
+'view', # type of view        
+'sqft_above', # square feet above ground        
+'sqft_basement', # square feet in basement        
+'yr_built', # the year built        
+'yr_renovated', # the year renovated        
+'lat', 'long', # the lat-long of the parcel       
+'sqft_living15', # average sq.ft. of 15 nearest neighbors         
+'sqft_lot15', # average lot size of 15 nearest neighbors 
+]
+```
+
+Compute the RMSE (root mean squared error) on the test_data for the model using
+just my_features, and for the one using advanced_features.
+
+Ans:
+```python
+my_features = ['bedrooms', 'bathrooms', 'sqft_living', 'sqft_lot', 'floors', 'zipcode']
+
+advanced_features = 
+[
+'bedrooms', 'bathrooms', 'sqft_living', 'sqft_lot', 'floors', 'zipcode',
+'condition', # condition of house       
+'grade', # measure of quality of construction       
+'waterfront', # waterfront property       
+'view', # type of view        
+'sqft_above', # square feet above ground        
+'sqft_basement', # square feet in basement        
+'yr_built', # the year built        
+'yr_renovated', # the year renovated        
+'lat', 'long', # the lat-long of the parcel       
+'sqft_living15', # average sq.ft. of 15 nearest neighbors         
+'sqft_lot15', # average lot size of 15 nearest neighbors 
+]
+
+train_data,test_data = sales.random_split(.8,seed=0)
+
+f_model = graphlab.linear_regression.create(train_data, target='price', features=my_features, validation_set=None)
+af_model = graphlab.linear_regression.create(train_data, target='price', features=advanced_features, validation_set=None)
+
+print "RMSE diff = " + str(f_model.evaluate(test_data)['rmse'] - af_model.evaluate(test_data)['rmse'])
+```
+
+RMSE diff = 22711.3165108
 
