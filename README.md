@@ -580,3 +580,288 @@ print "RMSE diff = " + str(f_model.evaluate(test_data)['rmse'] - af_model.evalua
 
 RMSE diff = 22711.3165108
 
+## WEEK 3 Classification: Analyzing Sentiment
+
+### CLASSIFICATION MODELING
+
+#### Analyzing the sentiment of reviews
+
+Rating with stars is too simple
+
+Understand aspects of restaurant review
+- build a restaurant review app
+- categories for review e.g. experience, ramen, sushi
+- Break all reviews into sentences in a **Sentence Sentiment Classifier**
+- Average the predictions
+- Display the most positive or negative reviews
+
+#### Classification Aplications
+
+    Input (sentence) -> Classifier -> Output (predicted rating)
+
+
+Examples
+- Webpage classification by category e.g. education, finance, technology
+- Spam filtering: checks sender, text, ipaddress, etc
+- Image classification
+- Personalized medical diagnosis
+- Reading your mind by FMRI
+
+
+**simple threshold classifier**
+- list of +ve words: great, awesome, etc
+- list of -ve words: bad, terrible, etc
+- `if # +ve words > # -ve words => ŷ = +ve else ŷ = -ve`
+- e.g. "Great sushi, awesome food, but terrible service" => +2, -1
+
+Problems with threshold classifier
+- populating initial +ve and -ve word lists
+- words have degrees of sentiment: e.g. "great" > "good" 
+- single words are not enough: "good" vs "not good"
+
+The first two can be address by learning a classifier
+
+The 3rd issue can be address by more elaborate features
+
+
+| Word                            | Weight |
+| --------------------------------| >----- |
+| great                           |  1.5   |
+| awesome                         |  1.2   |
+| bad                             | -1.0   |
+| terrible                        | -2.1   |
+| awful                           | -3.3   |
+| restaurant, the, we, where, ... |  0.0   |
+
+e.g. "Sushi was great, the food was awesome, but the service was terrible"
+- `score = 1.2 (great) + 1.7 (awesome) - 2.1 (terrible) = 0.8`
+
+####  Decision Boundaries
+
+Can graph scores. e.g. awesome = 1.0 and awful = -1.5
+
+    awful
+     5|
+     4|
+     3|
+     2| * (this ambiance is awesome but service is awful and food is awful)
+     1|
+     0|-------- awesome
+      0 1 2 3 4
+
+For linear classifiers
+- when 2 weights are non-zero: **line**
+- when 3 weights are non-zero: **plane**
+- when 2 weights are non-zero: **hyperplane**
+
+### Evaluating classification models
+
+#### Training and Evaluating a Classifier
+
+Training a classifier = Learning the weights
+- split data into *training* and *test* sets
+- training set is passed to *learned classifier* to learn weights of words
+- test set is *evaluated* by **error** & **accuracy**
+
+Test example "Sushi was great"
+- Feed the sentence ^ to the learned classifier
+- predict `ŷ` is +ve
+- pass multiple test cases and compare *correct* vs *mistakes*
+
+**Classification error & accuracy**
+- `Error = (# mistakes) / (total # sentences)`
+  - best possible value = 0.0
+- `Accuracy = (# correct) / (total # sentences)`
+  - best possible value = 1.0
+
+`error = 1 - accuracy`
+
+#### What's a good accuracy?
+
+Purely random guessing on a binary classification = `0.5 accuracy`
+
+For *k classes*, `accuracy = 1/k`
+
+**we should at least beat random guessing**
+
+This can be counterintuitive e.g.
+- "90% email is spam"
+- if we predict 100% email is spam we get 90% accuracy
+
+Questions to ask:
+- Is there class imbalance? 
+- How does it compare to a simple,  baseline approach? 
+  - Random guessing 
+  - Majority class 
+  - ... 
+- Most importantly:  what accuracy does my application need? 
+  - What is good enough for my users experience? 
+  - What is the impact of the mistakes we make? 
+
+#### False positives, false negatives, and confusion matrices
+
+A **confusion matrix**
+
+                   Predicted Label
+                 |   +ve     |  -ve      |
+                 |-----------|-----------|
+     True    +ve | True +ve  | False -ve |
+     Label   -ve | False +ve | True -ve  |
+
+- True +ve & True -ve is good, we got it right
+- **FN** (False -ve) & **FP** have different impacts
+
+Example of domains
+
+               | Spam filtering | Medical Diagnosis  |
+               | -------------- | ------------------ |
+     False -ve | Annyoing       | Disease untreated  |
+     False +ve | Email lost     | Wasteful treatment |
+
+
+Given 100 test examples, a possible confusion matrix for spam filtering
+
+                Predicted Label
+                 | +ve  | -ve  |
+     True    +ve | (50) |  10  |
+     Label   -ve |   5  | (35) |
+
+Accuracy = 85/100 = 0.85 ie higher false +ve than false -ve
+
+Multiclass classification example with 100 test examples
+
+              Predicted Label
+          |            | Healthy    | Cold | Flu |
+          | ---------- | ---------- | ---- | --- |
+    True  | Healthy 70 | (60)       | 8    |  2  |
+    Label |    Cold 20 |   4        | (12) |  4  |
+          |     Flu 10 |   2        |      | (8) |
+
+Accuracy = (60 + 12 + 8)/100 = 80/100 = 0.8
+
+#### Learning Curves: How much data do I need?
+
+More data is good but *data quality* is more important
+
+Theoretical techniques sometimes bound how much data is needed
+- provide guidance but not as practical
+
+In practice
+- more complex models require more data
+- empirical analysis can provide guidance
+
+Learning curves
+- Generally, the more data we have the fewer test errors we find
+
+    Test error
+
+          ^
+          |*
+          | *
+          |   *
+          |      *
+          |            *
+          |                        *
+          |                                                 *
+          |----------------------------------> Amount of training data
+
+**Bias of model** even with infinite data, the curve never reaches 0. 
+
+More complex models tend to have less bias
+- sentiment classifier on single words does ok
+- But some are just too hard e.g. "The sushi was *not good*"
+- we can then score on pairs of words **bigram model**
+
+Even bigram models have bias. The graph looks better (approaches 0 faster) but
+never hits 0
+
+#### Class Probabilities
+
+Classifier provide a confidence level `P(y|x)`
+- e.g. "the sushi & everything else were awesome" `P(y=+|x) = 0.99`
+- "The sushi was good, the service was OK" `P(y=+|x) = 0.55`
+  - less confident that this is a +ve review
+
+### Summary of classification
+
+#### Classification ML block diagram
+
+![Classification ML Block Diagram](https://drive.google.com/uc?id=0BwjXv3TJiWYEOHY0MTRVUl80SUU)
+- `y` = Training data
+- `x` = word counts
+- `ŷ` = predicted sentiment
+- `ŵ` = weights for each word
+- `y` = sentiment label
+- compare `y` with `ŷ` to get a quality metric that is fed into ML Algorithm
+- ML algorithm updates `ŵ`
+
+#### Summary
+
+- Identify a classification problem and some common applications 
+- Describe decision boundaries and linear classifiers 
+- Train a classifier  
+- Measure its error 
+  - Some rules of thumb for good accuracy 
+- Interpret the types of error associated with classification 
+- Describe the tradeoffs between model bias and data set size 
+- Use class probability to express degree of confidence in prediction  
+
+#### Quiz: Classification
+
+1 The simple threshold classifier for sentiment analysis described in the video 
+(check all that apply):
+- Must have pre-defined positive and negative attributes
+- Must either count attributes equally or pre-define weights on attributes
+- Defines a possibly non-linear decision boundary
+
+1
+
+2 For a linear classifier classifying between positive and negative sentiment 
+in a review x, Score(x) = 0 implies (check all that apply):
+- The review is very clearly negative
+- We are uncertain whether the review is positive or negative
+- We need to retrain our classifier because an error has occurred
+
+2
+
+3 For which of the following datasets would a linear classifier perform 
+perfectly?
+
+x 1,2,3
+
+4 True or false: High classification accuracy always indicates a good 
+classifier.
+
+false
+
+5 True or false: For a classifier classifying between 5 classes, there always 
+exists a classifier with accuracy greater than 0.18.
+
+true
+
+6 True or false: A false negative is always worse than a false positive.
+
+false
+
+7 Which of the following statements are true? (Check all that apply)
+- Test error tends to decrease with more training data until a point, and then 
+  does not change (i.e., curve flattens out)
+- Test error always goes to 0 with an unboundedly large training dataset
+- Test error is never a function of the amount of training data
+
+1
+
+### Analyzing sentiment: IPython Notebook
+#### Open the iPython Notebook used in this lesson to follow along
+#### Loading & exploring product review data
+#### Creating the word count vector
+#### Exploring the most popular product
+#### Defining which reviews have positive or negative sentiment
+#### Training a sentiment classifier
+#### Evaluating a classifier & the ROC curve
+#### Applying model to find most positive & negative reviews for a product
+#### Exploring the most positive & negative aspects of a product
+
+### Programming assignment
+#### Analyzing product sentiment assignment
+#### Quiz: Analyzing product sentiment
