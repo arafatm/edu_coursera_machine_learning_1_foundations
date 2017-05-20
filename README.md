@@ -625,7 +625,7 @@ The 3rd issue can be address by more elaborate features
 
 
 | Word                            | Weight |
-| --------------------------------| >----- |
+| --------------------------------| -----: |
 | great                           |  1.5   |
 | awesome                         |  1.2   |
 | bad                             | -1.0   |
