@@ -95,15 +95,15 @@ Wk 6 Capstone: An intelligent application using deep learning
 
 ### GETTING STARTED WITH PYTHON
 
-Install anaconda, GraphLab, ipython notebook
+[Install anaconda, GraphLab, ipython 
+notebook](https://turi.com/download/install-graphlab-create.html)
 
-`$ jupyter notebook` to start ipython notebook server
-
-`jupyter nbconvert --execute <notebook>.ipynb` to create an html for your 
-notebook
-- notebooks can include code and markdown
-
-`ipython <file>.py` to run the python script
+To run notebooks once above is installed
+```
+source activate gl-env
+conda update pip
+jupyter-notebook --no-browser
+```
 
 [First Notebook](week_1/Getting started with iPython Notebook.html)
 - [source](week_1/Getting started with iPython Notebook.ipynb)
@@ -852,6 +852,7 @@ false
 1
 
 ### Analyzing sentiment: IPython Notebook
+
 #### Open the iPython Notebook used in this lesson to follow along
 #### Loading & exploring product review data
 #### Creating the word count vector
