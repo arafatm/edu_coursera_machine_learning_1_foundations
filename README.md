@@ -371,18 +371,11 @@ see the effect of the coefficients
 
 [Full iPython Notebook Source](https://github.com/arafatm/edu_coursera_machine_learning_1_foundations/blob/master/code/02.01.predicting.house.prices.ipynb)
 
-#### Loading & exploring house sale data
-
-`sales = graphlab.SFrame('home_data.gl/')`
-
-View the data
-`sales`
-
 Generate a scatter plot
 `sales.show(view="Scatter Plot", x="sqft_living", y="price")`
 - can hover over individual points to explore further
 
-#### Splitting the data into training and test sets
+Splitting the data into training and test sets
 
 `train_data,test_data = sales.random_split(.8,seed=0)`
 - Use `random_split` to split training and test data
@@ -390,52 +383,51 @@ Generate a scatter plot
 - set `seed` to 0 in this case. we should use a random seed or let GL pick it 
   for you
 
-#### Learning a simple regression model to predict house prices from house size
+Learning a simple regression model to predict house prices from house size
 
-`sqft_model = graphlab.linear_regression.create(train_data, target='price', 
-features=['sqft_living'], validation_set=None)`
-- `linear_regression.create`
+```
+sqft_model = graphlab.linear_regression.create(train_data,
+                                               target='price', 
+                                               features=['sqft_living'], 
+                                               validation_set=None)
+```
 - note the default algorithm used is **Newton's Method**
 
-#### Evaluating error (RMSE) of the simple model
+Evaluating error (RMSE) of the simple model
 
 `print sqft_model.evaluate(test_data)`
 - `max_error` is the outlier
 - Also shows **RMSE**
 
-#### Visualizing predictions of simple model with Matplotlib
+Visualizing predictions of simple model with Matplotlib
 
 ```
 import matplotlib.pyplot as plt
 %matplotlib inline
-```
 
-```
 plt.plot(test_data['sqft_living'], test_data['price'], '.',
          test_data['sqft_living'], sqft_model.predict(test_data), '-')
 ```
 - blue `.` is the actual data scatter plot
 - green `-` as a line is the predicted value based on the test_data
 
-#### Inspecting the model coefficients learned
+Inspecting the model coefficients learned
 
 `sqft_model.get('coefficients')`
 - (intercept) =  where the line crosses the y axis
 - sqft_living ~= the average cost of a house per sq ft according to this 
   regression model
 
-#### Exploring other features of the data
-
 View other features of a house we might be interested in
+
 ```
 my_features = ['bedrooms', 'bathrooms', 'sqft_living', 'sqft_lot', 'floors', 'zipcode']
+
 sales[my_features].show()
 
 sales.show(view='BoxWhisker Plot', x='zipcode', y='price')
 ```
 - `BoxWhisker Plot` to view the set split by feature (zipcode in this case)
-
-#### Learning a model to predict house prices from more features
 
 Based on the data we see other features such as zip code, and # bedrooms makes 
 a difference in the estimated price of a home
@@ -451,13 +443,14 @@ my_features_model = graphlab.linear_regression.create(train_data,
 `print my_features` to view what features are includedd
 
 Compare the original model to the expanded features model
+
 ```
 print sqft_model.evaluate(test_data)
 print my_features_model.evaluate(test_data)
 ```
 - Note that the **rmse** has lowered by adding additional features
 
-#### Applying learned models to predict price of an average house
+Applying learned models to predict price of an average house
 
 ```
 house1 = sales[sales['id']=='5309101200'] # find a particular house by id
@@ -475,7 +468,7 @@ features
 :caution: the prediction model based on sqft was more accurate than the 
 expanded feature model in **this case**
 
-#### Applying learned models to predict price of two fancy houses
+Applying learned models to predict price of two fancy houses
 
 `house2 = sales[sales['id']=='1925069082']`
 - this is an example of a house where due to an uncaptured feature, "on the 
@@ -853,15 +846,32 @@ false
 
 ### Analyzing sentiment: IPython Notebook
 
-#### Open the iPython Notebook used in this lesson to follow along
-#### Loading & exploring product review data
-#### Creating the word count vector
-#### Exploring the most popular product
-#### Defining which reviews have positive or negative sentiment
-#### Training a sentiment classifier
-#### Evaluating a classifier & the ROC curve
-#### Applying model to find most positive & negative reviews for a product
-#### Exploring the most positive & negative aspects of a product
+
+[Full iPython Notebook 
+Source](https://github.com/arafatm/edu_coursera_machine_learning_1_foundations/blob/master/code/03.01.analyzing.product.sentiment.ipynb)
+
+Analyze text
+`products['word_count'] = graphlab.text_analytics.count_words(products['review'])`
+
+Train classifier using a **logistic classifier**
+
+```
+train_data,test_data = products.random_split(.8, seed=0)
+
+
+sentiment_model = graphlab.logistic_classifier.create(train_data,
+                                                     target='sentiment',
+                                                     features=['word_count'],
+                                                     validation_set=test_data)
+```
+
+Evaluate the sentiment model using **ROC Curve**
+
+```
+sentiment_model.evaluate(test_data, metric='roc_curve')
+
+sentiment_model.show(view='Evaluation')
+```
 
 ### Programming assignment
 #### Analyzing product sentiment assignment
