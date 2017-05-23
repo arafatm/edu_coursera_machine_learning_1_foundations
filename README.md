@@ -876,3 +876,301 @@ sentiment_model.show(view='Evaluation')
 ### Programming assignment
 #### Analyzing product sentiment assignment
 #### Quiz: Analyzing product sentiment
+
+## WEEK 4 Clustering and Similarity: Retrieving Documents
+
+### Algorithms for retrieval and measuring similarity of documents
+
+#### Document retrieval: A case study in clustering and measuring similarity
+
+- Groups of related articles: **clusters**
+
+#### What is the document retrieval task?
+
+Given an article, how to find similar articles?
+- measure similarity
+- search over similar articles
+
+#### Word count representation for measuring similarity
+
+Most popular model: **bag of words model**
+- ignore order of words
+- count # of instances of each word in vocabulary
+
+Create vector e.g. "Carlos calls the sport futbol" vs "Emily calls the sport soccer"
+
+| word   | count |
+| ----   | ----- |
+| carlos | 1     |
+| the    | 2     |
+| tree   | 0     |
+| calls  | 2     |
+| sport  | 2     |
+| cat    | 0     |
+| futbol | 1     |
+| dog    | 0     |
+| soccer | 1     |
+| emily  | 1     |
+
+Measuring similarity: compare the following 2
+- article on messi: 1 0 0 0 5 3 0 0 1 0 0 0 0
+- article on pele:  3 0 0 0 2 0 0 1 0 1 0 0 0
+- similarity = (1 * 3) + (5 * 2) = 13
+
+Another example
+- article on messi:  1 0 0 0 5 3 0 0 1 0 0 0 0
+- article on africa: 0 0 1 0 0 0 9 0 0 6 0 4 0
+- similarity = 0
+
+Issue *Doc Length*: The longer the documents, the higher similarity score
+- messi: 1 0 0 0 5 3 0 0 1 0 0 0 0 doubled 2 0 0 0 10 6 0 0 2 0 0 0 0
+- pele:  3 0 0 0 2 0 0 1 0 1 0 0 0 doubled 6 0 0 0  4 0 0 2 0 2 0 0 0
+- original similarity = 13 vs doubled = 52
+
+Solution = normalize `Sqrt(Sum(i^2))`
+- messi: 1 0 0 0 5 3 0 0 1 0 0 0 0 
+- normalized: Sqrt(1^2 + 5^2 + 3^2 + 1^2) = Sqrt(36) = 6
+- messi normalized = 6 0 0 0 6 6 0 0 6 0 0 0 0 
+
+#### Prioritizing important words with tf-idf
+
+- Common words in doc: the, player, field, goal 
+- ^ dominate rare words like: futbol, Messi
+ 
+**discount word** `w` based on # of docs containing `w` in corpus
+
+But we don't want only rare words to dominate
+
+What characterizes an important word ? 
+- Appears frequently in document  **common locally**
+- Appears rarely in corpus **rare globally**
+
+Trade off between **local frequency** and **global rarity** 
+
+**TD-IDF** := Term frequency - Inverse document frequency
+- tf:
+- idf: `log( # docs / 1 + # docs using word)`
+  - word in many docs: `log(large / 1 + large)` ~= log 1 = 0
+  - rare word: `log(large # / 1 + small #)` => large #
+
+#### Calculating tf-idf vectors
+
+e.g. doc with "the" showing up 100 times and "messi" showing up 5
+- assuming 64 docs and "the" shows up in 63 of them
+- assuming "messi" shows up in 3 docs
+- TF: {the: 1000, Messi: 5}
+- IDF: { the: log 64/1+63 = 0, Messi: log 64/1+3 = log 16 = 4 }
+- TF-IDF (TF * IDF) "the" = 1000 * 0 = 0
+- TF-IDF (TF * IDF) "messi" = 5 * 4 = 20
+
+#### Retrieving similar documents using nearest neighbor search
+
+- **query article** is the current article
+- **corpus** = entire library
+- specify: **distance metric**
+- output: set of most similar articles
+
+Algorithm
+- search over each article in corpus
+- compute **s = similarity**
+- if **s > Best_s**, set new **Best_s** as this article
+
+**k-nearest neighbor**
+- return **list of k** similar articles
+
+### Clustering models and algorithms
+
+#### Clustering documents task overview
+
+Discover groups **clusters** of related articles
+- Structure documents by topic: e.g. sports, world news, etc
+- assumuning we are provided with labels
+
+**Multiclass classification Problem**
+- how do i classify a new article based on clusters?
+- example of a **supervised learning** problem
+
+#### Clustering documents: An unsupervised learning task
+
+**Clustering**: no labels provided & want to uncover cluster structure
+- Input: docs as vectors [w1, w2]
+- Output: cluster labels
+- once articles are clustered, you can *post-facto* provide a meaningful label
+  e.g. "sport"
+
+![Clustering](https://drive.google.com/uc?id=0BwjXv3TJiWYEQTllcDhzMnA0OGs)
+
+Defining a cluster
+- **center**
+- **shape** or spread
+
+To assign a new article check the shape of the cluster and center
+
+Another approach is to only look at distance from center
+
+![Cluster Center](https://drive.google.com/uc?id=0BwjXv3TJiWYEWkg0ak43eTh3STA)
+
+#### K-means: A clustering algorithm
+
+Assuming similarity metric is distance from center
+
+![k-means 1](https://drive.google.com/uc?id=0BwjXv3TJiWYEOElMd3BWNTl1LWc)
+
+0 Initialize cluster centers
+
+![k-means 2](https://drive.google.com/uc?id=0BwjXv3TJiWYEalluMkJQZ3VqZGs)
+
+1 Assign observations to closest cluster centers **Voronoi Tessalation**
+- Assign regions
+
+![k-means 3](https://drive.google.com/uc?id=0BwjXv3TJiWYEMEVRbHNmWVZVMmc)
+
+2 Revise cluster centers as mean of assigned observations
+- Iterate on the process
+
+![k-means 4](https://drive.google.com/uc?id=0BwjXv3TJiWYEbC1BM2cwMHRZeU0)
+
+3 Repeat 1,2 until convergence
+
+![k-means 5](https://drive.google.com/uc?id=0BwjXv3TJiWYEN0U4bFZaZURkd0U)
+
+
+#### Other examples of clustering
+
+Clustering images: by ocean, dog, clouds, etc
+
+Clustering patients by medical condition: by subpopulations and diseases
+  - e.g. patients with seizures 
+  - record seizure activity over time
+  - cluster the different types of seizures
+
+![Siezure recording](https://drive.google.com/uc?id=0BwjXv3TJiWYEMl9KZGRpQ29HOWc)
+
+![Siezure clustering](https://drive.google.com/uc?id=0BwjXv3TJiWYEN3dBcFhBVXpWMU0)
+
+Clustering products on amazon:
+- discover product categories from purchase histories
+- discover groups of users
+- e.g. person buying crib also purchased baby seat => crib is "baby product",
+  not "furniture"
+
+Structuring web search results
+- e.g. "cardinal" can have multiple meanings: bird, baseball team, catholic
+  cardinal
+- Use clusturing to structure output
+
+Discovering similar neighborhoods: estimate price at a small region
+- cluster regions with similar sales trends
+
+Discovering similar neighborhoods: forecast violent crimes
+- cluster regions
+
+### Summary of clustering and similarity
+
+- Training data: doc id, document text
+- x: tf-idf
+- ML model: clustering
+- ŷ: estimated cluster label
+- y: does not exist b'se **unsupervised learning**
+- quality metric: x & ŵ
+  - i.e. distances of observations to assigned centers
+- ŵ: cluster centers
+- ML algorithm: k-means
+
+![Clustering ML Block](https://drive.google.com/uc?id=0BwjXv3TJiWYEV05qQzJMN05GclU)
+
+#### Clustering and similarity ML block diagram
+
+#### Summary
+
+- Describe ways to represent a document (e.g., raw word counts, tf-idf ,...) 
+- Measure the similarity between two documents 
+- Discuss issues related to using raw word counts 
+  - Normalize counts to adjust for document length 
+  - Emphasize important words using tf-idf
+- Implement a nearest neighbor search for document retrieval 
+- Describe the input (unlabeled observations) and output (labels) of a clustering algorithm 
+- Determine whether a task is supervised or unsupervised 
+- Cluster documents using k-means (algorithmic details to come...) 
+- Describe other applications of clustering 
+
+#### Quiz: Clustering and Similarity
+
+1 A country, called Simpleland, has a language with a small vocabulary of just
+the, on, and, go, round, bus, and wheels. For a word count vector with indices
+ordered as the words appear above, what is the word count vector for a document
+that simply says "the wheels on the bus go round and round".
+
+Please enter the vector of counts as follows: If the counts were ["the"=1,
+on=3, "and"=2, "go"=1, "round"=2, "bus"=1, "wheels"=1], enter 1321211.
+
+- the the
+- on
+- and
+- go
+- round round
+- bus
+- wheels
+
+2111211
+
+2 In Simpleland, a reader is enjoying a document with a representation: [1 3 2
+1 2 1 1]. Which of the following articles would you recommend to this reader
+next?
+- [7 0 2 1 0 0 1] * [1 3 2 1 2 1 1] = [7 0 4 1 0 0 1] = 13
+- [1 7 0 0 2 0 1] * [1 3 2 1 2 1 1] = [1 21 0 0 4 0 1] = 27
+- [1 0 0 0 7 1 2] * [1 3 2 1 2 1 1] = [1 0 0 0 14 1 2] = 18
+- [0 2 0 0 7 1 1] * [1 3 2 1 2 1 1] = [0 6 0 0 14 1 1] = 22
+
+3 A corpus in Simpleland has 99 articles. If you pick one article and perform
+1-nearest neighbor search to find the closest article to this query article,
+how many times must you compute the similarity between two articles?
+- Y 98
+- 98 * 2 = 196
+- 98/2 = 49
+- (98)^2
+- 99
+
+4 For the TF-IDF representation, does the relative importance of words in a
+document depend on the base of the logarithm used? For example, take the words
+"bus" and "wheels" in a particular document. Is the ratio between the TF-IDF
+values for "bus" and "wheels" different when computed using log base 2 versus
+log base 10?
+
+No
+
+5 Which of the following statements are true? (Check all that apply):
+- Y Deciding whether an email is spam or not spam using the text of the email 
+  and some spam / not spam labels is a supervised learning problem.
+- Dividing emails into two groups based on the text of each email is a 
+  supervised learning problem.
+- Y If we are performing clustering, we typically assume we either do not have 
+  or do not use class labels in training the model.
+
+6 Which of the following pictures represents the best k-means solution?
+(Squares represent observations, plus signs are cluster centers, and colors
+indicate assignments of observations to cluster centers.)
+
+2
+
+
+### Document retrieval: IPython Notebook
+
+#### Open the iPython Notebook used in this lesson to follow along1h
+
+#### Loading & exploring Wikipedia data
+
+#### Exploring word counts
+
+#### Computing & exploring TF-IDFs
+
+#### Computing distances between Wikipedia articles
+
+#### Building & exploring a nearest neighbors model for Wikipedia articles
+
+#### Examples of document retrieval in action
+
+### Programming assignment: Retrieving Wikipedia articles assignment1h
+
+### Quiz: Retrieving Wikipedia articles
+
