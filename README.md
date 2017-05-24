@@ -1156,19 +1156,65 @@ indicate assignments of observations to cluster centers.)
 
 ### Document retrieval: IPython Notebook
 
-#### Open the iPython Notebook used in this lesson to follow along1h
+![Source 
+code](https://github.com/arafatm/edu_coursera_machine_learning_1_foundations/blob/master/code/04.document.retrieval.ipynb)
 
 #### Loading & exploring Wikipedia data
 
+Using `text_analytics`
+
+```python
+
+obama = people[people['name'] == 'Barack Obama']
+
+obama = graphlab.text_analytics.count_words(obama['text'])
+
+print obama['word_count']
+```
+
 #### Exploring word counts
+
+Extract words and counts using `stack`
+
+```python
+obama_word_count_table = obama[['word_count']] \
+                        .stack('word_count',
+                               new_column_name = ['word','count']) \
+                        .sort('count', ascending=False)
+```
 
 #### Computing & exploring TF-IDFs
 
+```python
+people['word_count'] = graphlab.text_analytics.count_words(people['text'])
+
+people['tfidf'] = graphlab.text_analytics.tf_idf(people['word_count'])
+
+obama = people[people['name'] == 'Barack Obama']
+
+obama[['tfidf']].stack('tfidf',new_column_name=['word','tfidf']).sort('tfidf',ascending=False)
+```
+
 #### Computing distances between Wikipedia articles
+
+Manually computing distance
+
+```python
+clinton = people[people['name'] == 'Bill Clinton']
+
+graphlab.distances.cosine(obama['tfidf'][0],clinton['tfidf'][0])
+```
 
 #### Building & exploring a nearest neighbors model for Wikipedia articles
 
-#### Examples of document retrieval in action
+Using `nearest_neighbors`
+
+```python
+knn_model = graphlab.nearest_neighbors \
+            .create(people, features=['tfidf'], label='name')
+
+knn_model.query(obama, radius=0.84, k=10)
+```
 
 ### Programming assignment: Retrieving Wikipedia articles assignment1h
 

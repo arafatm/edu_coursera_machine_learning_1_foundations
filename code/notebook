@@ -1,0 +1,3 @@
+source activate gl-env
+conda update pip
+jupyter-notebook --no-browser
