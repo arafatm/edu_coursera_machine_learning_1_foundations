@@ -1572,3 +1572,84 @@ graphlab.show_comparison(model_performance,[popularity_model, personalized_model
 ```
 
 ### Quiz: Recommending songs
+
+## Deep Learning: Searching for Images
+
+### Neural networks: Learning very non-linear features
+
+#### Slides presented in this module 10 min
+
+[Annotated PDF](https://drive.google.com/uc?id=0BwjXv3TJiWYEa2o0bmw0RHQ1d0U)
+
+Some useful papers on computer vision:
+- [SIFT - Lowe '99](http://www.cs.ubc.ca/~lowe/papers/iccv99.pdf)
+- [Spin Images - Johnson & Herbert '99](https://www.ri.cmu.edu/pub_files/pub2/johnson_andrew_1997_3/johnson_andrew_1997_3.pdf)
+- [Textons - Malik et al. '99](http://www.cs.berkeley.edu/~malik/papers/LM-3dtexton.pdf)
+- [RIFT - Lazebnik '04](https://hal.inria.fr/inria-00548530/document)
+- [GLOH - Mikolajczyk & Schmid '05](http://lear.inrialpes.fr/pubs/2005/MS05/mikolajczyk_pami05.pdf)
+- [HoG - Dalal & Triggs '05](http://lear.inrialpes.fr/people/triggs/pubs/Dalal-cvpr05.pdf)
+- [SURF - Bay et al. '06](http://www.vision.ee.ethz.ch/~surf/eccv06.pdf)
+- [ImageNet - Krizhevsky '12](http://www.cs.toronto.edu/~fritz/absps/imagenet.pdf)
+
+#### What is a visual product recommender? 3 min
+
+Want to search for a product but not sure what keywords to use e.g. dress
+- "dress floral" shows varied options
+- Can click on "similar items" once we find something we like
+
+#### Learning very non-linear features with neural networks 9 min
+
+Features are key to machine learning
+
+**Deep learning** based on **neural networks**
+- learning *very* non-linear features
+
+Linear classifiers create a boundary between +ve and -ve scores
+
+With neural networks, we use graphs to score
+
+    Score(x) = w0 + Sum(wi * xi)
+
+![Graph Classifier](images/06.graph.classifier.png)
+
+### Deep learning & deep features
+#### Application of deep learning to computer vision 5 min
+#### Deep learning performance 3 min
+#### Demo of deep learning model on ImageNet data 2 min
+#### Other examples of deep learning in computer vision 1 min
+#### Challenges of deep learning 2 min
+#### Deep Features 6 min
+
+### Summary of deep learning
+#### Deep learning ML block diagram 3 min
+#### Quiz: Deep Learning 6 questions
+
+### Deep features for image classification: iPython Notebook
+#### Open the iPython Notebook used in this lesson to follow along1h
+#### Loading image data 3 min
+#### Training & evaluating a classifier using raw image pixels 6 min
+#### Training & evaluating a classifier using deep features 8 min
+
+### Deep features for image retrieval: iPython Notebook
+#### Open the iPython Notebook used in this lesson to follow along1h
+#### Loading image data 2 min
+#### Creating a nearest neighbors model for image retrieval 1 min
+#### Querying the nearest neighbors model to retrieve images 5 min
+#### Querying for the most similar images for car image 1 min
+#### Displaying other example image retrievals with a Python lambda 4 min
+
+### Programming assignment
+#### Deep features for image classification & retrieval assignment1h
+#### Quiz: Deep features for image retrieval 7 questions
+
+### Deploying machine learning as a service
+#### Slides presented in this module 10 min
+#### You've made it! 40 sec
+#### Deploying an ML service 3 min
+#### What happens after deployment? 7 min
+
+### Machine learning challenges and future directions
+#### Open challenges in ML 8 min
+#### Where is ML going? 6 min
+#### What's ahead in the specialization 5 min
+#### Thank you! 1 min
