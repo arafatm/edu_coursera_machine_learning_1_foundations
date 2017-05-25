@@ -1220,3 +1220,309 @@ knn_model.query(obama, radius=0.84, k=10)
 
 ### Quiz: Retrieving Wikipedia articles
 
+## WEEK 5 Recommender Systems
+
+### Recommender systems
+
+ML to use past history of your and other's purchases
+
+Where we see recommender systems in action
+- youtube, netflix movies
+- amazon products: include global and session interests e.g. last yr was buying 
+  newborn products
+- facebook friend recommendations
+- drug target interactions: drug d has been studied for target t. Can we 
+  discover new applications of d?
+
+Building a recommender system via **classification**
+
+#### Solution 0: Popularity
+
+rank by global popularity
+
+con: no personalization
+
+#### Solution 1: Classification Model
+
+    User Info        |
+                     |                  Yes
+    Purchase History |                  /
+                     |----> Classifier <
+    Product Info     |                  \
+                     |                  No
+    Other Info       |
+
+Features may not be available e.g. age, gender
+
+doesn't perform as well as **collaborative filtering**
+
+### Solution 2: Co-occurrence matrices for collaborative filtering
+
+e.g. person buying diapers might also be interested in baby wipes b'se others 
+did so
+
+**Matrix C:** `(#i * #j)`
+- symmetric matrix: reflective on diagonal
+- when buying diapers, look at the row for diapers and find other products that 
+  people bought frequently when buying diapers
+
+    row diapers [ 0 .... 4 ......... 100 ... ]
+                dvd    pacifier   baby wipes
+
+
+#### Effect of popular items
+
+*Sophie giraffe* is a popular baby product
+
+
+Can weight my purchased items to refine e.g.
+- `Score(me, baby wipes) = 1/2[S(wipes,diapers) + S(wipes,milk)]`
+
+Cons: does not utilize
+- context: e.g. time of day
+- user features: e.g. age
+- product features: e.g. baby vs electronics
+- Cold start problem: what if this is a new product
+
+    row Sophie [ 0 .... 4 ......... 100 ......... 1M ..... ]
+                dvd    pacifier   baby wipes    diapers
+
+Diapers is really popular so it *drowns out* everything else in the domain
+
+#### Normalizing co-occurrence matrices and leveraging purchase histories
+
+Normalize with **Jaccard Similarity**
+- similar to TF-IDF
+- `(#i + #j purchased) / (#i OR #j purchased)`
+- ^ = `∪(i,j) / i' + j'` (venn notation)
+
+An alternative similarity metric is *cosine similarity*
+
+Cons
+- does not utilize context (e.g. time of day), user features (e.g. age), 
+  product features (e.g. baby vs electronics)
+- Cold start problem: no history for a new product or user
+
+### Matrix factorization
+
+#### Matrix completion task
+
+| User  | Movie | Rating |
+| ----- | ----- | ------ |
+| U1    | M1    | 3      |
+| U1    | M2    | 5      |
+| U1    | M3    | 2      |
+| U2    | M4    | 2      |
+| U2    | M5    | 4      |
+| U3    | M2    | 4      |
+| U3    | M4    | 4      |
+| U3    | M5    | 5      |
+| U3    | M6    | 4      |
+
+
+Matrix
+
+             -------------
+    Rating = |XX  X   XXX|
+             |X  X       |
+             |    X X X X| Users
+             | X XX X    |
+             |X  X      X|
+             |  X  XX    |
+             -------------
+                Movies
+
+- Rating(u,v) known for X cells
+- Rating(u,v) unknown for blank cells
+
+Goal is to fill missing data
+
+#### Recommendations from known user/item features
+
+- Describe Movie `v` with topics `Rv`
+  - action, romance, drama ... = [0,3, 0.01, 1.5, ...]
+- Describe User `u` with topics `Lu`
+  - action, romance, drama ... = [2.5, 0, 0.8, ...]
+
+Estimate `^Rating(u,v)` for an unkown movie = `^Rv * ^Lu`
+
+    [0,3, 0.01, 1.5, ...] * [2.5, 0, 0.8, ...] = 0.75 + 0 + 1.2
+                                               = 1.95
+
+^ is not representative of what the user would score the movie, but the higher 
+the score the more likely they are to like it
+
+#### Predictions in matrix form
+
+
+    Rating(u,v) = <Lu, Rv>
+
+Can create the same matrix like above by using by getting all Lu and all Rv
+
+#### Discovering hidden structure by matrix factorization
+
+Use residual sum of squars RSS (introduced earlier)
+
+    RSS(L,R) = SUM[(Rating(u,v) - <Lu,Rv>)^2]
+
+**Matrix Factorization Model** is taking this matrix and approximating it with 
+factorization
+
+Limitations:
+- cold start problem: new movie or user
+
+#### Bringing it all together: Featurized matrix factorization
+
+- Features capture *context*
+- matrix factorization captures *group of users*
+
+We can combine the 2 above to mitigate cold-start problem
+- rating for a new user from *features* only
+- As we gather user data we shift to matrix factorization *topics*
+
+Netflix Challenge 2006-2009
+- winning team blended over 100 models
+
+### Performance metrics for recommender systems
+
+#### A performance metric for recommender systems
+
+*Don't want* to use classification accuracy (liked vs not liked)
+- not interested in what a person does not like
+- want to quickly discover relatively few liked items
+- ^ imbalanced class problem
+
+Users have short attention span, so we want to recommend fewer items
+- higher cost to missing liked item
+
+    Recall = (# liked & shown) / (# liked)
+
+    e.g 3/5
+
+    Precision = (# liked & shown) / (# shown)
+
+    e.g. 3/11
+    
+#### Optimal recommenders
+
+How to maximize *recall*? recommend all my liked items
+- in this case precision is really small. e.g. 1000 total products, of which i 
+  liked 6 items => precision = 6/1000
+
+Optimal recommender is to only recommend only items I like
+- precision & recall = 1
+
+#### Precision-recall curves
+
+- Input: specific recommender system
+- Oupture: algoritm-specific *precision-recall curve*
+
+![Precision Recall Curve](https://drive.google.com/uc?id=0BwjXv3TJiWYETGhjTTVVQ1VIa2s)
+            
+A possible metric is **AUC** (Area under Curve). e.g. compare the blue curve to 
+green curve below
+
+![Precision Recall Algorithm](https://drive.google.com/uc?id=0BwjXv3TJiWYEQWpRSDlrbkMwTVE)
+
+Another metric is to set desired recall and maximize *precision at k* e.g.
+- only want to display x items to fit on a single page
+- assuming users will ignore anything more than x items
+
+### Summary of recommender systems
+
+Recommender systems ML block diagram
+- Training data = user, products, ratings
+- x: user_id, product_id
+- ML Model: matrix factorization
+- ŵ: { ^Lu, ^Ru } + other weighted parameters
+- ŷ: predicted rating
+- y = actual ratings (training data set)
+- quality metric: RSS as well as others
+
+![ML Block Diagram](https://drive.google.com/uc?id=0BwjXv3TJiWYER3piY0gwcmcyWU0)
+
+### Quiz: Recommender Systems
+
+1 Recommending items based on global popularity can (check all that apply):
+- provide personalization
+- capture context (e.g., time of day)
+- none of the above
+
+2 Recommending items using a classification approach can (check all that apply):
+- provide personalization
+- capture context (e.g., time of day)
+- none of the above
+
+3 Recommending items using a simple count based co-occurrence matrix can (check all that apply):
+- provide personalization
+- capture context (e.g., time of day)
+- none of the above
+
+4 Recommending items using featurized matrix factorization can (check all that apply):
+- provide personalization
+- capture context (e.g., time of day)
+- none of the above
+
+5 Normalizing co-occurrence matrices is used primarily to account for:
+- people who purchased many items
+- items purchased by many people
+- eliminating rare products
+- none of the above
+
+6 A store has 3 customers and 3 products. Below are the learned feature vectors for each user and product. Based on this estimated model, which product would you recommend most highly to User #2?
+
+| User ID | Feature vector     |
+| 1       | (1.73, 0.01, 5.22) |
+| 2       | (0.03, 4.41, 2.05) |
+| 3       | (1.13, 0.89, 3.76) |
+
+| Product ID  | Feature vector     |
+| 1           | (3.29, 3.44, 3.67) |
+| 2           | (0.82, 9.71, 3.88) |
+| 3           | (8.34, 1.72, 0.02) |
+
+- Product #1
+- Product #2
+- Product #3
+
+7 For the liked and recommended items displayed below, calculate the recall and
+round to 2 decimal points. (As in the lesson, green squares indicate
+recommended items, magenta squares are liked items. Items not recommended are
+grayed out for clarity.) Note: enter your answer in American decimal format
+(e.g. enter 0.98, not 0,98)
+
+8 For the liked and recommended items displayed below, calculate the precision
+and round to 2 decimal points. (As in the lesson, green squares indicate
+recommended items, magenta squares are liked items. Items not recommended are
+grayed out for clarity.) Note: enter your answer in American decimal format
+(e.g. enter 0.98, not 0,98)
+
+
+9 Based on the precision-recall curves in the figure below, which recommender would you use?
+- RecSys #1
+- RecSys #2
+- RecSys #3
+
+- 3 
+- 1,2 
+- 1  
+- 1,2 
+- 2 
+- 2 
+- 1 / 3 = 0.33
+- 1/4 = 0.25
+- 1
+
+### Song recommender: IPython Notebook
+
+Loading and exploring song data
+
+Creating & evaluating a popularity-based song recommender
+
+Creating & evaluating a personalized song recommender
+
+Using precision-recall to compare recommender models
+
+Programming assignment
+
+### Quiz: Recommending songs
