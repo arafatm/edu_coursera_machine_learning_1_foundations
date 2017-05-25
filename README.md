@@ -1503,26 +1503,72 @@ grayed out for clarity.) Note: enter your answer in American decimal format
 - RecSys #2
 - RecSys #3
 
-- 3 
-- 1,2 
-- 1  
-- 1,2 
-- 2 
-- 2 
+- 3
+- 1,2
+- 1
+- 1,2
+- 2
+- 2
 - 1 / 3 = 0.33
 - 1/4 = 0.25
 - 1
 
 ### Song recommender: IPython Notebook
 
-Loading and exploring song data
+[Source Code](https://github.com/arafatm/edu_coursera_machine_learning_1_foundations/blob/master/code/05.song.recommender.ipynb)
 
-Creating & evaluating a popularity-based song recommender
 
-Creating & evaluating a personalized song recommender
+#### Loading and exploring song data
 
-Using precision-recall to compare recommender models
+Song data = `[user_id, song_id, listen_count, title, artist, song]`
 
-Programming assignment
+`song_data['song'].show()`
+
+Show `unique` users `users = song_data['user_id'].unique()`
+
+#### Creating & evaluating a popularity-based song recommender
+
+Set up train/test data
+`train_data,test_data = song_data.random_split(.8,seed=0)`
+
+Popularity based recommender `popularity_recommender`
+
+```python
+popularity_model = graphlab.popularity_recommender \
+                              .create(train_data,
+                                      user_id='user_id',
+                                      item_id='song')
+```
+
+Note: we're using *song* as the `item_id` for the recommender above
+
+The recommendations for all users should be the same
+- `popularity_model.recommend(users=[users[0]])`
+- `popularity_model.recommend(users=[users[1]])`
+
+#### Creating & evaluating a personalized song recommender
+
+Personalized recommender `item_similarity_recommender`
+
+```python
+personalized_model = graphlab.item_similarity_recommender \
+                             .create(train_data,
+                                     user_id='user_id',
+                                     item_id='song')
+```
+
+Can recommend by user `personalized_model.recommend(users=[users[0]])`
+
+Or by Song `personalized_model.get_similar_items(['With Or Without You - U2'])`
+
+#### Using precision-recall to compare recommender models
+
+Can `compare()` the 2 models on `test_data` and generate a graph
+
+```python
+model_performance = graphlab.compare(test_data, [popularity_model, personalized_model], user_sample=0.05)
+
+graphlab.show_comparison(model_performance,[popularity_model, personalized_model])
+```
 
 ### Quiz: Recommending songs
