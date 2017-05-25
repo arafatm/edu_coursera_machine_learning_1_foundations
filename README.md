@@ -1610,7 +1610,7 @@ With neural networks, we use graphs to score
 
     Score(x) = w0 + Sum(wi * xi)
 
-![Graph Classifier](images/06.graph.classifier.png)
+![Graph Classifier](blob/master/images/06.graph.classifier.PNG)
 
 ### Deep learning & deep features
 #### Application of deep learning to computer vision 5 min
