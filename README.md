@@ -1610,19 +1610,126 @@ With neural networks, we use graphs to score
 
     Score(x) = w0 + Sum(wi * xi)
 
-![Graph Classifier C](images/06.graph.classifier.PNG)
-
 ![Graph Classifier](images/06.graph.classifier.png)
 
+QN: If the perceptron takes an input of exacly 0, what should it output?
+- ANS: Implementation defined. An input of zero is an edge case.
+
+What can a linear classifier represent?
+- x1 OR x2
+- x1 AND x2
+
+![What can a linear classifier represent?](images/06.linear.classifier.represent.png)
+
+What *can't* a linear classifier represent? **XOR**
+
+![What can't a linear classifier represent?](images/06.non.linear.classifier.png)
+
+^ this is a representation of a simple neural network
+
+Neural Networks
+- require lots of data
+- require high performance systems
+
 ### Deep learning & deep features
+
 #### Application of deep learning to computer vision 5 min
+
+Image features are combined to make a prediction.
+- e.g. nose, eye, eye, mouth => face
+- ^ detectors are much lower level. don't find eye, but various features
+- ^ find "unique" features
+
+Example algorithm is SIFT
+
+![SIFT](images/06.sift.png)
+
+Implicitly learn features
+
+![implicitly learn features](image/06.implicit.learn.features.png)
+
 #### Deep learning performance 3 min
+
+Examples of image recognition using deep neural networks
+- 99.5% German traffic sign
+- 97.8% house number recognition
+- [ImageNet 2012 competition](http://www.image-net.org/challenges/LSVRC/2012/)
+  - SuperVision team got huge gain over competitors with new algorithms and GPU implementation
+
 #### Demo of deep learning model on ImageNet data 2 min
+
+[ImageNet](http://www.image-net.org/)
+
 #### Other examples of deep learning in computer vision 1 min
+
+Scene parsing: label parts of an image
+
+![scene parsing](images/06.scene.parsing.png)
+
 #### Challenges of deep learning 2 min
+
+Pros
+- Enables learning of features rather than hand tuning
+- Impressive performance gains
+  - Computer vision
+  - Speech recognition
+  - Some text analysis
+- Potential for more impact
+
+Cons
+- Requires a lot of data for high accuracy
+- Computationally really expensive
+- Extremely hard to tune
+  - Choice of architecture
+  - Parameter types
+  - Hyperparameters
+  - Learning algorithm
+  - etc
+
+![layers](images/06.layers.png)
+
+Computationally expensive and hard to tune
+
 #### Deep Features 6 min
 
+**Deep Features** allow us to build neural networks with smaller seed data
+
+![Deep Features](images/06.deep.features.png)
+
+In a neural net
+- early tasks are more generic and used as feature extractor
+- later tasks are specific
+
+By doing:
+- keep weights fixed for early tasks
+- use simple classifier in later tasks
+
+![Tasks](images/06.tasks.png)
+
+Workflow looks like ![workflow](images/06.workflow.png)
+
+Real world use: Compology adds camera to trash cans to detect how full the
+trashcan is
+
 ### Summary of deep learning
+
+- training data: image, label
+- x: deep features
+- ML model: logistic regression
+- ŷ: predicted labels
+- y: true labels
+- quality metric: classification accuracy
+- ŵ: weights of features
+
+- Describe multi-layer neural network models
+- Interpret the role of features as local detectors in computer vision
+- Relate neural networks to hand-crafted image features
+- Describe some settings where deep learning achieves significant performance boosts
+- State the pros & cons of deep learning model
+- Apply the notion of transfer learning
+- Use neural network models trained in one domain as features for building a model in another domain
+- Build an image retrieval tool using deep features
+
 #### Deep learning ML block diagram 3 min
 #### Quiz: Deep Learning 6 questions
 
