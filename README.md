@@ -1706,7 +1706,9 @@ By doing:
 
 ![Tasks](images/06.tasks.png)
 
-Workflow looks like ![workflow](images/06.workflow.png)
+Workflow looks like 
+
+![workflow](images/06.workflow.png)
 
 Real world use: Compology adds camera to trash cans to detect how full the
 trashcan is
@@ -1721,6 +1723,9 @@ trashcan is
 - quality metric: classification accuracy
 - ŵ: weights of features
 
+![ML Block Diagram](06.ml.block.png)
+
+Summary
 - Describe multi-layer neural network models
 - Interpret the role of features as local detectors in computer vision
 - Relate neural networks to hand-crafted image features
@@ -1730,8 +1735,79 @@ trashcan is
 - Use neural network models trained in one domain as features for building a model in another domain
 - Build an image retrieval tool using deep features
 
-#### Deep learning ML block diagram 3 min
 #### Quiz: Deep Learning 6 questions
+
+1 Which of the following statements are true? (Check all that apply)
+- Linear classifiers are never useful, because they cannot represent XOR.
+- Linear classifiers are useful, because, with enough data, they can represent anything.
+- Having good non-linear features can allow us to learn very accurate linear classifiers.
+- none of the above
+
+2 A simple linear classifier can represent which of the following functions? (Check all that apply)
+Hint: If you are stuck, see https://www.coursera.org/learn/ml-foundations/module/nqC1t/discussions/AAIUurrtEeWGphLhfbPAyQ
+- x1 OR x2 OR NOT x3
+- x1 AND x2 AND NOT x3
+- x1 OR (x2 AND NOT x3)
+- none of the above
+
+[Generated tables](http://turner.faculty.swau.edu/mathematics/materialslibrary/truth/)
+
+| a | b | c | a OR b OR NOT c |
+| T | T | T | T |
+| T | T | F | T |
+| T | F | T | T |
+| T | F | F | T |
+| F | T | T | T |
+| F | T | F | T |
+| F | F | T | F |
+| F | F | F | T |
+
+| a | b | c | a AND b AND NOT c |
+| T | T | T | F |
+| T | T | F | T |
+| T | F | T | F |
+| T | F | F | F |
+| F | T | T | F |
+| F | T | F | F |
+| F | F | T | F |
+| F | F | F | F |
+
+| a | b | c | a OR (b AND NOT c) |
+| T | T | T | T  |
+| T | T | F | T  |
+| T | F | T | T  |
+| T | F | F | T  |
+| F | T | T | F  |
+| F | T | F | T  |
+| F | F | T | F  |
+| F | F | F | F  |
+
+3 Which of the the following neural networks can represent the following function? Select all that apply.
+(x1 AND x2) OR (NOT x1 AND NOT x2)
+
+Hint: If you are stuck, see https://www.coursera.org/learn/ml-foundations/module/nqC1t/discussions/AAIUurrtEeWGphLhfbPAyQ
+
+
+4 Which of the following statements is true? (Check all that apply)
+- Features in computer vision act like local detectors.
+- Deep learning has had impact in computer vision, because it’s used to combine all the different hand-created features that already exist.
+- By learning non-linear features, neural networks have allowed us to automatically learn detectors for computer vision.
+- none of the above
+
+5 If you have lots of images of different types of plankton labeled with their species name, and lots of computational resources, what would you expect to perform better predictions:
+- a deep neural network trained on this data.
+- a simple classifier trained on this data, using deep features as input, which were trained using ImageNet data.
+
+6 If you have a few images of different types of plankton labeled with their species name, what would you expect to perform better predictions:
+- a deep neural network trained on this data.
+- a simple classifier trained on this data, using deep features as input, which were trained using ImageNet data.
+
+- 3
+- 1,2,3
+- x 3,4 x 5 x 1,2,5
+- 1,2,3
+- 1
+- 2
 
 ### Deep features for image classification: iPython Notebook
 #### Open the iPython Notebook used in this lesson to follow along1h
