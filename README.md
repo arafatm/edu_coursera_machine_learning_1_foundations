@@ -171,7 +171,7 @@ square(3)
 
 ### GETTING STARTED WITH SFRAME AND GRAPHLAB CREATE
 
-[Full iPython Notebook Source](https://github.com/arafatm/edu_coursera_machine_learning_1_foundations/blob/master/code/01.02.getting.started.with.sframes.ipynb)
+[iPython Notebook](code/01.02.getting.started.with.sframes.ipynb)
 
 Machine learning library [scikit-learn](http://scikit-learn.org/stable/)
 
@@ -369,7 +369,7 @@ see the effect of the coefficients
 
 ### Predicting house prices: IPython Notebook
 
-[Full iPython Notebook Source](https://github.com/arafatm/edu_coursera_machine_learning_1_foundations/blob/master/code/02.01.predicting.house.prices.ipynb)
+[iPython Notebook](code/02.01.predicting.house.prices.ipynb)
 
 Generate a scatter plot
 `sales.show(view="Scatter Plot", x="sqft_living", y="price")`
@@ -847,8 +847,7 @@ false
 ### Analyzing sentiment: IPython Notebook
 
 
-[Full iPython Notebook 
-Source](https://github.com/arafatm/edu_coursera_machine_learning_1_foundations/blob/master/code/03.01.analyzing.product.sentiment.ipynb)
+[iPython Notebook](code/03.01.analyzing.product.sentiment.ipynb)
 
 Analyze text
 `products['word_count'] = graphlab.text_analytics.count_words(products['review'])`
@@ -1156,8 +1155,7 @@ indicate assignments of observations to cluster centers.)
 
 ### Document retrieval: IPython Notebook
 
-![Source 
-code](https://github.com/arafatm/edu_coursera_machine_learning_1_foundations/blob/master/code/04.document.retrieval.ipynb)
+![iPython Notebook](code/04.document.retrieval.ipynb)
 
 #### Loading & exploring Wikipedia data
 
@@ -1515,7 +1513,7 @@ grayed out for clarity.) Note: enter your answer in American decimal format
 
 ### Song recommender: IPython Notebook
 
-[Source Code](https://github.com/arafatm/edu_coursera_machine_learning_1_foundations/blob/master/code/05.song.recommender.ipynb)
+[iPython Notebook](code/05.song.recommender.ipynb)
 
 
 #### Loading and exploring song data
@@ -1577,7 +1575,7 @@ graphlab.show_comparison(model_performance,[popularity_model, personalized_model
 
 ### Neural networks: Learning very non-linear features
 
-#### Slides presented in this module 10 min
+#### Slides presented in this module
 
 [Annotated PDF](https://drive.google.com/uc?id=0BwjXv3TJiWYEa2o0bmw0RHQ1d0U)
 
@@ -1591,13 +1589,13 @@ Some useful papers on computer vision:
 - [SURF - Bay et al. '06](http://www.vision.ee.ethz.ch/~surf/eccv06.pdf)
 - [ImageNet - Krizhevsky '12](http://www.cs.toronto.edu/~fritz/absps/imagenet.pdf)
 
-#### What is a visual product recommender? 3 min
+#### What is a visual product recommender?
 
 Want to search for a product but not sure what keywords to use e.g. dress
 - "dress floral" shows varied options
 - Can click on "similar items" once we find something we like
 
-#### Learning very non-linear features with neural networks 9 min
+#### Learning very non-linear features with neural networks
 
 Features are key to machine learning
 
@@ -1633,7 +1631,7 @@ Neural Networks
 
 ### Deep learning & deep features
 
-#### Application of deep learning to computer vision 5 min
+#### Application of deep learning to computer vision
 
 Image features are combined to make a prediction.
 - e.g. nose, eye, eye, mouth => face
@@ -1648,7 +1646,7 @@ Implicitly learn features
 
 ![implicitly learn features](image/06.implicit.learn.features.png)
 
-#### Deep learning performance 3 min
+#### Deep learning performance
 
 Examples of image recognition using deep neural networks
 - 99.5% German traffic sign
@@ -1656,17 +1654,17 @@ Examples of image recognition using deep neural networks
 - [ImageNet 2012 competition](http://www.image-net.org/challenges/LSVRC/2012/)
   - SuperVision team got huge gain over competitors with new algorithms and GPU implementation
 
-#### Demo of deep learning model on ImageNet data 2 min
+#### Demo of deep learning model on ImageNet data
 
 [ImageNet](http://www.image-net.org/)
 
-#### Other examples of deep learning in computer vision 1 min
+#### Other examples of deep learning in computer vision
 
 Scene parsing: label parts of an image
 
 ![scene parsing](images/06.scene.parsing.png)
 
-#### Challenges of deep learning 2 min
+#### Challenges of deep learning
 
 Pros
 - Enables learning of features rather than hand tuning
@@ -1690,7 +1688,7 @@ Cons
 
 Computationally expensive and hard to tune
 
-#### Deep Features 6 min
+#### Deep Features
 
 **Deep Features** allow us to build neural networks with smaller seed data
 
@@ -1803,38 +1801,120 @@ Hint: If you are stuck, see https://www.coursera.org/learn/ml-foundations/module
 - a simple classifier trained on this data, using deep features as input, which were trained using ImageNet data.
 
 - 3
-- 1,2,3
-- x 3,4 x 5 x 1,2,5
+- x 1,2,3
+- 3 x 3,5 x 3,4 x 5 x 1,2,5
 - 1,2,3
 - 1
 - 2
 
 ### Deep features for image classification: iPython Notebook
-#### Open the iPython Notebook used in this lesson to follow along1h
-#### Loading image data 3 min
-#### Training & evaluating a classifier using raw image pixels 6 min
-#### Training & evaluating a classifier using deep features 8 min
+
+[iPython Notebook](code/06.01.deep.features.image.classification.ipynb)
+
 
 ### Deep features for image retrieval: iPython Notebook
-#### Open the iPython Notebook used in this lesson to follow along1h
-#### Loading image data 2 min
-#### Creating a nearest neighbors model for image retrieval 1 min
-#### Querying the nearest neighbors model to retrieve images 5 min
-#### Querying for the most similar images for car image 1 min
-#### Displaying other example image retrievals with a Python lambda 4 min
+
+[iPython Notebook](code/06.02.deep.features.image.retrieval.ipynb)
 
 ### Programming assignment
-#### Deep features for image classification & retrieval assignment1h
-#### Quiz: Deep features for image retrieval 7 questions
+
+- bird
+- 6
+- 4
+- 35 - 37
+- 37-39
+- cat
+- 60-70
 
 ### Deploying machine learning as a service
-#### Slides presented in this module 10 min
-#### You've made it! 40 sec
-#### Deploying an ML service 3 min
-#### What happens after deployment? 7 min
+
+What is Production?
+- Deployment: Server live predictions
+- Evaluation: Measuring quality of deployed models
+- Management: Choosing between deployed models
+- Monitoring: Tracking model quality & operations
+
+    Deployment ---> Evaluation
+
+        ^               |
+        |               |
+        |               v
+
+    Management <--- Monitoring
+
+#### Deployment System
+
+      Batch Training            Real-time Predictions
+    |-------------------| |----------------------------------------|
+
+    Hist. Data -> Model -> System -> Predictions
+        ^    ^             ^     \
+        |     \           /       v
+        |       Live Data          Feedback
+        |_____________________________|
+
+#### After Deployment: Evaluation, Management, Monitoring
+
+Use feedback to learn a *Model 2*
+- run both and compare to Model 1
+- continuous evaluation and testing
+
+Evaluation = predictions + metrics
+- track data collecting from users
+- what metrics being used to evaluate
+
+Offline evaluation: when do we update the model?
+- e.g. SSE (sum squared error)
+
+Online evaluation: choosing between models
+- e.g. User engagement
+
+Can use **A/B Testing** to choose between ML Models
+
+Other production considerations
+- A/B testing caveats
+- versioning
+- provenance
+- dashboards
+- reports
+- etc
 
 ### Machine learning challenges and future directions
-#### Open challenges in ML 8 min
-#### Where is ML going? 6 min
-#### What's ahead in the specialization 5 min
-#### Thank you! 1 min
+
+#### Open challenges in ML
+
+Choice of Model to use
+- Lots of models are available
+- e.g. classifier vs matrix factorization
+
+Data representation
+- e.g. how do i represent bag of words count or tf-idf
+
+Scaling: Data is getting big
+- e.g. too many social networks to get data from
+- e.g. wearable devices are gathering a lot of data
+- e.g. IoT
+- Need methods that scale up to the amount of data available
+
+Scaling: models are getting big
+- e.g. clustering models applied on brain activity gets complicated
+
+CPUs stopped getting faster
+- marginal increases in last decade
+
+Parallel architectures
+- can solve for CPU limitations e.g. using GPUs or clusters
+- concurrent system design and implementation is *hard*
+
+#### Where is ML going?
+
+- Self-driving cars
+- specialized medicine
+- combining real-time data gathering: e.g. localization, cameras, etc
+- scaling up with amount of data
+
+#### What's ahead in the specialization
+
+See last section in PDF
+
+#### Thank you!
